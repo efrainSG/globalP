@@ -1,6 +1,9 @@
 ﻿namespace GloabalP.Elevator.Core.Enums
 {
-    internal class Direction
+    public enum Direction
     {
+        Up,
+        Down,
+        Idle
     }
 }

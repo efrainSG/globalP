@@ -1,6 +1,8 @@
 ﻿namespace GloabalP.Elevator.Core.Interfaces
 {
-    internal interface IElevator
+    public interface IElevator
     {
+        void OpenDoors();
+        void CloseDoors();
     }
 }
