@@ -6,7 +6,7 @@ namespace GloabalP.Elevator.Core.Entities
     public class Elevator: IElevator
     {
         public byte CurrentFloor { get; set; } = 1;
-        public Direction Direction { get; set; }
+        public Direction Direction { get; set; } = Direction.Idle;
         public DoorState DoorState { get; set; } = DoorState.Closed;
 
         public Elevator() { }

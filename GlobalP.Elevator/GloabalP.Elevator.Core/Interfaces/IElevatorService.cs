@@ -4,7 +4,7 @@ namespace GloabalP.Elevator.Core.Interfaces
 {
     public interface IElevatorService
     {
-        void CallFromFloor(byte floor, Direction direction);
+        void CallFromFloor(FloorRequest request);
         void RequestFloor(byte floor);
         void Step();
     }
