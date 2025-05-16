@@ -1,0 +1,15 @@
+﻿################################################################################
+# Este archivo .gitignore ha sido creado automáticamente por Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/GlobalP.Elevator/.vs/GlobalP.Elevator
+/GlobalP.Elevator/GloabalP.Elevator.Core/obj
+/GlobalP.Elevator/GloabalP.Elevator.Infrastructure/obj
+/GlobalP.Elevator/GloabalP.Elevator.Tests/obj
+/GlobalP.Elevator/GlobalP.Elevator.ConsoleApp/obj
+/GlobalP.Elevator/GloabalP.Elevator.Core/bin/Debug/net8.0
+/GlobalP.Elevator/GloabalP.Elevator.Infrastructure/bin/Debug/net8.0
+/GlobalP.Elevator/GloabalP.Elevator.Tests/bin/Debug/net8.0
+/GlobalP.Elevator/GlobalP.Elevator.ConsoleApp/bin/Debug/net8.0
+/GlobalP.Elevator/.vs/ProjectEvaluation
