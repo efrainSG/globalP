@@ -6,6 +6,13 @@ namespace GloabalP.Elevator.Core.Strategies
     {
         private readonly LinkedList<byte> _requests = new();
         private readonly HashSet<byte> _requestedFloors = new();
+        public LinkedList<byte> Requests
+        {
+            get
+            {
+                return _requests;
+            }
+        }
 
         public void AddRequest(byte floor)
         {

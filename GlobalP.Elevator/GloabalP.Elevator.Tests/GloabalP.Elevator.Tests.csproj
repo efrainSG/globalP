@@ -18,6 +18,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GloabalP.Elevator.Core\GloabalP.Elevator.Core.csproj" />
+    <ProjectReference Include="..\GloabalP.Elevator.Infrastructure\GloabalP.Elevator.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Using Include="NUnit.Framework" />
   </ItemGroup>
 

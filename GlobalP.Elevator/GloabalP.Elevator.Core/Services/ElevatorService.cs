@@ -3,12 +3,12 @@ using GloabalP.Elevator.Core.Interfaces;
 
 namespace GloabalP.Elevator.Core.Services
 {
-    public class ElevatorService
+    public class ElevatorService : IElevatorService
     {
         private readonly Entities.Elevator _elevator;
         private readonly IDispatchingStrategy _dispatchingStrategy;
         private readonly ILogger _logger;
-
+        private byte? _nextTarget;
         public ElevatorService(Entities.Elevator elevator, IDispatchingStrategy dispatchingStrategy, ILogger logger)
         {
             _elevator = elevator;
@@ -30,30 +30,37 @@ namespace GloabalP.Elevator.Core.Services
 
         public void Step()
         {
-            var nextTarget = _dispatchingStrategy.GetNextRequest();
-            if (nextTarget.HasValue)
+            if (_nextTarget == null)
             {
-                MoveTowards(nextTarget.Value);
+                _nextTarget = _dispatchingStrategy.GetNextRequest();
+            }
+
+            if (_nextTarget.HasValue)
+            {
+                MoveTowards(_nextTarget.Value);
             }
         }
 
         private void MoveTowards(byte target)
         {
+            if (_elevator.CurrentFloor < target)
+            {
+                _elevator.CurrentFloor++;
+                _logger.Info($"Elevator going up to {target} floor from {_elevator.CurrentFloor} floor.");
+            }
+
+            else if (_elevator.CurrentFloor > target)
+            {
+                _elevator.CurrentFloor--;
+                _logger.Info($"Elevator going down to {target} floor from {_elevator.CurrentFloor} floor.");
+            }
+
             if (_elevator.CurrentFloor == target)
             {
                 _elevator.DoorState = DoorState.Open;
                 _logger.Info($"Elevator opens doors on {target} floor.");
-                _elevator.DoorState = DoorState.Closed;
-            }
-            else if (_elevator.CurrentFloor < target)
-            {
-                _elevator.CurrentFloor++;
-                _logger.Info($"Elevator going up to {target} floor.");
-            }
-            else
-            {
-                _elevator.CurrentFloor--;
-                _logger.Info($"Elevator going down to {target} floor.");
+                _elevator.Direction = Direction.Idle;
+                _nextTarget = null;
             }
         }
     }
