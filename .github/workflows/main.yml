@@ -27,5 +27,18 @@ jobs:
     - name: Build
       run: dotnet build GlobalP.Elevator/GlobalP.Elevator.sln --no-restore --configuration Release
 
-    - name: Run tests
-      run: dotnet test GlobalP.Elevator/GlobalP.Elevator.sln --no-build --configuration Release --verbosity normal
+    - name: Run tests with coverage
+      run: dotnet test GlobalP.Elevator/GlobalP.Elevator.sln --no-build --configuration Release --collect:"XPlat Code Coverage"
+
+    - name: Report coverage
+      uses: danielpalme/ReportGenerator-Github-Action@5.1.26
+      with:
+        reports: '**/coverage.cobertura.xml'
+        targetdir: 'coveragereport'
+        reporttypes: 'HtmlInline;Cobertura'
+
+    - name: Upload coverage report artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: coveragereport
