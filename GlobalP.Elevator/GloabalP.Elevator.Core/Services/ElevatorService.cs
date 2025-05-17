@@ -22,10 +22,10 @@ namespace GloabalP.Elevator.Core.Services
             _dispatchingStrategy.AddRequest(floor);
         }
 
-        public void CallFromFloor(byte floor, Direction direction)
+        public void CallFromFloor(FloorRequest request)
         {
-            _logger.Info($"External request from {floor} to {direction}");
-            _dispatchingStrategy.AddRequest(floor);
+            _logger.Info($"External request from {request.Floor} to {request.Direction}");
+            _dispatchingStrategy.AddRequest(request.Floor);
         }
 
         public void Step()
@@ -46,12 +46,14 @@ namespace GloabalP.Elevator.Core.Services
             if (_elevator.CurrentFloor < target)
             {
                 _elevator.CurrentFloor++;
+                _elevator.Direction = Direction.Up;
                 _logger.Info($"Elevator going up to {target} floor from {_elevator.CurrentFloor} floor.");
             }
 
             else if (_elevator.CurrentFloor > target)
             {
                 _elevator.CurrentFloor--;
+                _elevator.Direction = Direction.Down;
                 _logger.Info($"Elevator going down to {target} floor from {_elevator.CurrentFloor} floor.");
             }
 

@@ -13,5 +13,10 @@ namespace GloabalP.Elevator.Core
             Floor = floor;
             Direction = direction;
         }
+
+        public override string ToString()
+        {
+            return $"Floor: {Floor}, Direction: {Direction}";
+        }
     }
 }

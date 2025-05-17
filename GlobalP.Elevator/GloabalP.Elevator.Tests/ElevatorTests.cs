@@ -25,6 +25,22 @@ namespace GloabalP.Elevator.Tests
         }
 
         [Test]
+        public void ElevatorShouldNotGoBelowFirstFloorOrAboveFifthFloor()
+        {
+            _elevator.CurrentFloor = 1;
+            _elevator.Direction = Direction.Down;
+
+            _service.Step();
+            Assert.AreEqual(1, _elevator.CurrentFloor);
+
+            _elevator.CurrentFloor = 5;
+            _elevator.Direction = Direction.Up;
+
+            _service.Step();
+            Assert.AreEqual(5, _elevator.CurrentFloor);
+        }
+
+        [Test]
         public void RequestFloor_ShouldAddRequestToDispatchingStrategy()
         {
             _service.RequestFloor(3);
@@ -84,5 +100,65 @@ namespace GloabalP.Elevator.Tests
             Assert.AreEqual(4, _dispatcher.GetNextRequest());
             Assert.AreEqual(2, _dispatcher.GetNextRequest());
         }
+
+        [Test]
+        public void DoorsClose_WhenElevatorStartsMoving()
+        {
+            _service.RequestFloor(3);
+            _service.Step();
+
+            Assert.AreEqual(DoorState.Closed, _elevator.DoorState);
+        }
+
+        [Test]
+        public void ElevatorRemainsIdle_WhenNoRequests()
+        {
+            _service.Step();
+
+            Assert.AreEqual(Direction.Idle, _elevator.Direction);
+            Assert.AreEqual(DoorState.Closed, _elevator.DoorState);
+            Assert.AreEqual(1, _elevator.CurrentFloor);
+        }
+
+        [Test]
+        public void RequestFromCurrentFloor_ShouldOpenDoorsImmediately()
+        {
+            _elevator.CurrentFloor = 3;
+            _service.RequestFloor(3);
+            _service.Step();
+
+            Assert.AreEqual(DoorState.Open, _elevator.DoorState);
+            Assert.AreEqual(Direction.Idle, _elevator.Direction);
+        }
+
+        [Test]
+        public void ExternalCall_ShouldBeProcessed()
+        {
+            _service.CallFromFloor(new (4, Direction.Down));
+            Assert.Contains(4, _dispatcher.Requests);
+        }
+
+        [Test]
+        public void ElevatorReachesTopFloor_AfterMultipleSteps()
+        {
+            _service.RequestFloor(5);
+
+            _service.Step();
+            _service.Step();
+            _service.Step();
+            _service.Step();
+
+            Assert.AreEqual(5, _elevator.CurrentFloor);
+            Assert.AreEqual(DoorState.Open, _elevator.DoorState);
+            Assert.AreEqual(Direction.Idle, _elevator.Direction);
+        }
+
+        [Test]
+        public void DoorsRemainClosed_WithoutAction()
+        {
+            _service.Step();
+            Assert.AreEqual(DoorState.Closed, _elevator.DoorState);
+        }
+
     }
 }
