@@ -31,13 +31,13 @@ namespace GloabalP.Elevator.Tests
             _elevator.Direction = Direction.Down;
 
             _service.Step();
-            Assert.AreEqual(1, _elevator.CurrentFloor);
+            Assert.That(_elevator.CurrentFloor, Is.EqualTo(1));
 
             _elevator.CurrentFloor = 5;
             _elevator.Direction = Direction.Up;
 
             _service.Step();
-            Assert.AreEqual(5, _elevator.CurrentFloor);
+            Assert.That(_elevator.CurrentFloor, Is.EqualTo(5));
         }
 
         [Test]
@@ -53,15 +53,15 @@ namespace GloabalP.Elevator.Tests
             _service.RequestFloor(3);
 
             _service.Step();
-            Assert.AreEqual(2, _elevator.CurrentFloor);
-            Assert.AreEqual(Direction.Up, _elevator.Direction);
+            Assert.That(_elevator.CurrentFloor, Is.EqualTo(2));
+            Assert.That(_elevator.Direction, Is.EqualTo(Direction.Up));
             Console.WriteLine(_elevator.ToString());
 
             _service.Step();
 
-            Assert.AreEqual(3, _elevator.CurrentFloor);
-            Assert.AreEqual(Direction.Idle, _elevator.Direction);
-            Assert.AreEqual(DoorState.Open, _elevator.DoorState);
+            Assert.That(_elevator.CurrentFloor, Is.EqualTo(3));
+            Assert.That(_elevator.Direction, Is.EqualTo(Direction.Idle));
+            Assert.That(_elevator.DoorState, Is.EqualTo(DoorState.Open));
         }
 
         [Test]
@@ -70,8 +70,8 @@ namespace GloabalP.Elevator.Tests
             _service.RequestFloor(2);
             _service.Step();
 
-            Assert.AreEqual(2, _elevator.CurrentFloor);
-            Assert.AreEqual(DoorState.Open, _elevator.DoorState);
+            Assert.That(_elevator.CurrentFloor, Is.EqualTo(2));
+            Assert.That(_elevator.DoorState, Is.EqualTo(DoorState.Open));
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace GloabalP.Elevator.Tests
             _service.RequestFloor(4);
             _service.RequestFloor(4);
 
-            Assert.AreEqual(1, _dispatcher.Requests.Count);
+            Assert.That(_dispatcher.Requests.Count, Is.EqualTo(1));
         }
 
         [Test]
@@ -97,8 +97,8 @@ namespace GloabalP.Elevator.Tests
             _service.RequestFloor(2);
             _service.RequestFloor(5);
 
-            Assert.AreEqual(4, _dispatcher.GetNextRequest());
-            Assert.AreEqual(2, _dispatcher.GetNextRequest());
+            Assert.That(_dispatcher.GetNextRequest(), Is.EqualTo(4));
+            Assert.That(_dispatcher.GetNextRequest(), Is.EqualTo(2));
         }
 
         [Test]
@@ -107,7 +107,7 @@ namespace GloabalP.Elevator.Tests
             _service.RequestFloor(3);
             _service.Step();
 
-            Assert.AreEqual(DoorState.Closed, _elevator.DoorState);
+            Assert.That(_elevator.DoorState, Is.EqualTo(DoorState.Closed));
         }
 
         [Test]
@@ -115,9 +115,9 @@ namespace GloabalP.Elevator.Tests
         {
             _service.Step();
 
-            Assert.AreEqual(Direction.Idle, _elevator.Direction);
-            Assert.AreEqual(DoorState.Closed, _elevator.DoorState);
-            Assert.AreEqual(1, _elevator.CurrentFloor);
+            Assert.That(_elevator.Direction, Is.EqualTo(Direction.Idle));
+            Assert.That(_elevator.DoorState, Is.EqualTo(DoorState.Closed));
+            Assert.That(_elevator.CurrentFloor, Is.EqualTo(1));
         }
 
         [Test]
@@ -127,15 +127,15 @@ namespace GloabalP.Elevator.Tests
             _service.RequestFloor(3);
             _service.Step();
 
-            Assert.AreEqual(DoorState.Open, _elevator.DoorState);
-            Assert.AreEqual(Direction.Idle, _elevator.Direction);
+            Assert.That(_elevator.DoorState, Is.EqualTo(DoorState.Open));
+            Assert.That(_elevator.Direction, Is.EqualTo(Direction.Idle));
         }
 
         [Test]
         public void ExternalCall_ShouldBeProcessed()
         {
             _service.CallFromFloor(new (4, Direction.Down));
-            Assert.Contains(4, _dispatcher.Requests);
+            Assert.That(_dispatcher.Requests, Does.Contain(4));
         }
 
         [Test]
@@ -148,16 +148,16 @@ namespace GloabalP.Elevator.Tests
             _service.Step();
             _service.Step();
 
-            Assert.AreEqual(5, _elevator.CurrentFloor);
-            Assert.AreEqual(DoorState.Open, _elevator.DoorState);
-            Assert.AreEqual(Direction.Idle, _elevator.Direction);
+            Assert.That(_elevator.CurrentFloor, Is.EqualTo(5));
+            Assert.That(_elevator.DoorState, Is.EqualTo(DoorState.Open));
+            Assert.That(_elevator.Direction, Is.EqualTo(Direction.Idle));
         }
 
         [Test]
         public void DoorsRemainClosed_WithoutAction()
         {
             _service.Step();
-            Assert.AreEqual(DoorState.Closed, _elevator.DoorState);
+            Assert.That(_elevator.DoorState, Is.EqualTo(DoorState.Closed));
         }
 
     }
